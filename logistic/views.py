@@ -6,6 +6,8 @@ from logistic.serializers import ProductSerializer, StockSerializer
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter
 
+from django.http import HttpResponse
+
 
 class ProductViewSet(ModelViewSet):
     queryset = Product.objects.all()
@@ -26,3 +28,7 @@ class StockViewSet(ModelViewSet):
             return Stock.objects.filter(products__id=product)
         else:
             return self.queryset
+        
+
+def test_page_view(request):
+    return HttpResponse('This is test_page')
