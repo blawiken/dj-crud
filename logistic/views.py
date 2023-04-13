@@ -31,4 +31,4 @@ class StockViewSet(ModelViewSet):
 
 
 def test_page_view(request):
-    return HttpResponse('This is test_page v2')
+    return HttpResponse('This is test_page v3')
