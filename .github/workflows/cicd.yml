@@ -1,0 +1,45 @@
+name: Тестирование и развёртывание проекта
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  tests:
+    runs-on: ubuntu-20.04
+    env:
+      SECRET_KEY: ${{ secrets.SECRET_KEY }}
+    services:
+      postgresql_main:
+        image: postgres:12
+        env:
+          POSTGRES_DB: "netology_stocks_products"
+          POSTGRES_USER: "postgres"
+          POSTGRES_PASSWORD: "0"
+        ports:
+          - 5432:5432
+        options:
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 5
+    
+    steps:
+      - name: Провека репозитория на изменения
+        uses: actions/checkout@v3
+
+      - name: Установка python
+        uses: actions/setup-python@v3
+        with:
+          python-version: 3.9
+      
+      - name: Установка зависимостей
+        run: pip install -r requirements.txt
+
+      - name: Линтинг
+        run: flake8 logistic / --exclude=logistic/migrations/
+
+      - name: Тесты
+        run: python manage.py test
+        env:
+          SECRET_KE: ${{ env.SECRET_KEY }}
