@@ -43,3 +43,11 @@ jobs:
         run: python manage.py test
         env:
           SECRET_KE: ${{ env.SECRET_KEY }}
+
+      - name: Деплой
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          script: expect /home/admin/dj-crud/deploy.exp
