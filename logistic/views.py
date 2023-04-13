@@ -28,7 +28,7 @@ class StockViewSet(ModelViewSet):
             return Stock.objects.filter(products__id=product)
         else:
             return self.queryset
-        
+
 
 def test_page_view(request):
     return HttpResponse('This is test_page')
